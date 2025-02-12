@@ -1,0 +1,6 @@
+﻿services:
+  recepify.api:
+    image: recepify.api
+    build:
+      context: .
+      dockerfile: Recepify.API/Dockerfile
