@@ -1,4 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Recepify.DLL;
+using Recepify.DLL.Entities;
 
 namespace Recepify.API.Controllers;
 
@@ -12,10 +16,12 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly RecepifyContext _context;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, RecepifyContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -29,4 +35,5 @@ public class WeatherForecastController : ControllerBase
             })
             .ToArray();
     }
+
 }

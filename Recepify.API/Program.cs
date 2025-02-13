@@ -1,6 +1,11 @@
+using Recepify.API.Helpers;
+using Recepify.BLL.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddBusinessLayerDependencies(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -20,4 +25,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+MigrationHelper.ApplyMigrations(app.Services);
 app.Run();

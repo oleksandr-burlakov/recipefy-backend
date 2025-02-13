@@ -1,6 +1,23 @@
 ﻿services:
   recepify.api:
+    container_name: recepify_api
     image: recepify.api
     build:
       context: .
       dockerfile: Recepify.API/Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - "db"
+  db:
+    image: postgres
+    container_name: postgres_db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: Password1!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      
+volumes:
+  postgres_data:
