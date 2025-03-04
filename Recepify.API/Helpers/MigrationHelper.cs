@@ -7,9 +7,16 @@ public static class MigrationHelper
 {
     public static void ApplyMigrations(IServiceProvider services)
     {
-        using var scope = services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<RecepifyContext>();
-        dbContext.Database.EnsureCreated();
-        dbContext.Database.Migrate();
+        try
+        {
+            using var scope = services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<RecepifyContext>();
+            dbContext.Database.EnsureCreated();
+            dbContext.Database.Migrate();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 }
