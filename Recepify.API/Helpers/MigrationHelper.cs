@@ -5,13 +5,12 @@ namespace Recepify.API.Helpers;
 
 public static class MigrationHelper
 {
-    public static void ApplyMigrations(IServiceProvider services)
+    public static void ApplyMigrations(IApplicationBuilder app)
     {
         try
         {
-            using var scope = services.CreateScope();
+            using var scope = app.ApplicationServices.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<RecepifyContext>();
-            dbContext.Database.EnsureCreated();
             dbContext.Database.Migrate();
         }
         catch (Exception e)

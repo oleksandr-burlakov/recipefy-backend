@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recepify.API", "Recepify.API\Recepify.API.csproj", "{FA08F721-35D6-45A8-8ED6-7240E07E7149}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recepify.Core", "Recepify.Core\Recepify.Core.csproj", "{2F4E248E-A246-4CED-92CD-7AC7B729FDAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recepify.BLL", "Recepify.BLL\Recepify.BLL.csproj", "{648F4EDD-E3C3-429C-AA6C-E677CFD52302}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recepify.DLL", "Recepify.DLL\Recepify.DLL.csproj", "{363AEBBC-8B48-45AA-8D3D-E83CDEF1557D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA08F721-35D6-45A8-8ED6-7240E07E7149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA08F721-35D6-45A8-8ED6-7240E07E7149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA08F721-35D6-45A8-8ED6-7240E07E7149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA08F721-35D6-45A8-8ED6-7240E07E7149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4E248E-A246-4CED-92CD-7AC7B729FDAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4E248E-A246-4CED-92CD-7AC7B729FDAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4E248E-A246-4CED-92CD-7AC7B729FDAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4E248E-A246-4CED-92CD-7AC7B729FDAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{648F4EDD-E3C3-429C-AA6C-E677CFD52302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{648F4EDD-E3C3-429C-AA6C-E677CFD52302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{648F4EDD-E3C3-429C-AA6C-E677CFD52302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{648F4EDD-E3C3-429C-AA6C-E677CFD52302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{363AEBBC-8B48-45AA-8D3D-E83CDEF1557D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{363AEBBC-8B48-45AA-8D3D-E83CDEF1557D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{363AEBBC-8B48-45AA-8D3D-E83CDEF1557D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{363AEBBC-8B48-45AA-8D3D-E83CDEF1557D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -37,4 +37,8 @@
       <ProjectReference Include="..\Recepify.DLL\Recepify.DLL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models\Products\" />
+    </ItemGroup>
+
 </Project>
