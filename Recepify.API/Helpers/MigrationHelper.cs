@@ -1,17 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Recepify.DLL;
+using Recepify.DLL.Helpers;
 
 namespace Recepify.API.Helpers;
 
 public static class MigrationHelper
 {
-    public static void ApplyMigrations(IApplicationBuilder app)
+    public static async Task ApplyMigrationsAsync(IApplicationBuilder app)
     {
         try
         {
             using var scope = app.ApplicationServices.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<RecepifyContext>();
-            dbContext.Database.Migrate();
+            await DatabaseHelpers.EnsureDatabaseCreatedAsync(dbContext);
+            await DatabaseHelpers.MigrateDatabaseAsync(dbContext);
+            //dbContext.Database.Migrate();
         }
         catch (Exception e)
         {

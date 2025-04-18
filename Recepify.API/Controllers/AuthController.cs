@@ -46,7 +46,7 @@ public class AuthController : ControllerBase
     {
         var user = await _userManager.FindByNameAsync(request.Username);
         if (user == null || !(await _userManager.CheckPasswordAsync(user, request.Password)))
-            return Unauthorized("Invalid credentials");
+            return BadRequest("Invalid credentials");
 
         var token = GenerateJwtToken(user.UserName);
         var refreshToken = GenerateRefreshToken();

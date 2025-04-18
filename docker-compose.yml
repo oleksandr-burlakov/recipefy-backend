@@ -2,6 +2,8 @@
   recepify.api:
     container_name: recepify_api
     image: recepify.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     build:
       context: .
       dockerfile: Recepify.API/Dockerfile
