@@ -15,5 +15,6 @@ public static class DI
         services.AddScoped<ProductService>();
         services.AddScoped<ProductCategoryService>();
         services.AddScoped<ReceiptService>();
+        services.AddScoped<ReceiptCategoryService>();
     }
 }
