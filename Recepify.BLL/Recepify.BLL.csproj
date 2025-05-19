@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Recepify.DLL\Recepify.DLL.csproj" />
+      <ProjectReference Include="..\Recepify.Core\Recepify.Core.csproj" />
     </ItemGroup>
 
 </Project>

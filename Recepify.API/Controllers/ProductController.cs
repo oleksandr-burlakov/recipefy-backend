@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Recepify.BLL.Models.Products;
 using Recepify.BLL.Services;
-using Recepify.DLL.Entities;
+using Recepify.Core.ResultPattern;
 
 namespace Recepify.API.Controllers;
 
@@ -12,33 +12,29 @@ namespace Recepify.API.Controllers;
 public class ProductController(ProductService productService) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetProducts()
+    public async Task<IResultBase> GetProducts()
     {
-        var products = await productService.GetAllProductsAsync();
-        return Ok(products);
+        return await productService.GetAllProductsAsync();
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetProductById(Guid id)
+    public async Task<IResultBase> GetProductById(Guid id)
     {
-        var product = await productService.GetProductByIdAsync(id);
-        return Ok(product);
+        return await productService.GetProductByIdAsync(id);
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> AddProduct([FromBody] AddProductDto productRequest)
+    public async Task<IResultBase> AddProduct([FromBody] AddProductDto productRequest)
     {
-        var result = await productService.AddProductAsync(productRequest);
-        return Ok(result);
+        return await productService.AddProductAsync(productRequest);
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteProduct(Guid id)
+    public async Task<IResultBase> DeleteProduct(Guid id)
     {
-        var result = await productService.DeleteAsync(id);
-        return Ok(result);
+        return await productService.DeleteAsync(id);
     }
-    
+
     // [HttpPut("{id:guid}")]
     // public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] Product product)
     // {

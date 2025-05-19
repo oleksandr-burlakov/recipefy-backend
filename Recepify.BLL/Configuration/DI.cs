@@ -2,7 +2,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Recepify.BLL.Services;
 using Recepify.DLL.Configuration;
-using Recepify.DLL.Entities;
 
 namespace Recepify.BLL.Configuration;
 
@@ -15,5 +14,6 @@ public static class DI
 
         services.AddScoped<ProductService>();
         services.AddScoped<ProductCategoryService>();
+        services.AddScoped<ReceiptService>();
     }
 }

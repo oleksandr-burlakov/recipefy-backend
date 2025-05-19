@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Recepify.BLL.Models.ProductCategories;
 using Recepify.BLL.Services;
+using Recepify.Core.ResultPattern;
 
 namespace Recepify.API.Controllers;
 
@@ -11,39 +12,34 @@ namespace Recepify.API.Controllers;
 public class ProductCategoryController(ProductCategoryService productCategoryService) : ControllerBase 
 {
     [HttpGet]
-    public async Task<IActionResult> GetProductCategories()
+    public async Task<IResultBase> GetProductCategories()
     {
-        var productCategories = await productCategoryService.GetProductCategoriesAsync();
-        return Ok(productCategories);
+        return await productCategoryService.GetProductCategoriesAsync();
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetProductCategoryById(Guid id)
+    public async Task<IResultBase> GetProductCategoryById(Guid id)
     {
-        var productCategory = await productCategoryService.GetProductCategoryByIdAsync(id);
-        return Ok(productCategory);
+        return await productCategoryService.GetProductCategoryByIdAsync(id);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddProductCategory([FromBody] AddProductCategoryDto productCategoryDto)
+    public async Task<IResultBase> AddProductCategory([FromBody] AddProductCategoryDto productCategoryDto)
     {
-        var result = await productCategoryService.AddProductCategoryAsync(productCategoryDto);
-        return Ok(result);
+        return await productCategoryService.AddProductCategoryAsync(productCategoryDto);
     }
     
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateProductCategory(Guid id, [FromBody] UpdateProductCategoryDto productCategoryDto)
+    public async Task<IResultBase> UpdateProductCategory(Guid id, [FromBody] UpdateProductCategoryDto productCategoryDto)
     {
         productCategoryDto.Id = id;
-        var result = await productCategoryService.UpdateProductCategoryAsync(productCategoryDto);
-        return Ok(result);
+        return await productCategoryService.UpdateProductCategoryAsync(productCategoryDto);
     }
     
     [HttpDelete("{id:guid}")] 
-    public async Task<IActionResult> DeleteProductCategory(Guid id)
+    public async Task<IResultBase> DeleteProductCategory(Guid id)
     {
-        var result = await productCategoryService.DeleteProductCategoryAsync(id);
-        return Ok(result);
+        return await productCategoryService.DeleteProductCategoryAsync(id);
     }
     
 }
