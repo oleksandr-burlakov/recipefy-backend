@@ -7,25 +7,25 @@ namespace Recepify.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReceiptCategoryController(ReceiptCategoryService receiptCategoryService) : ControllerBase
+    public class RecipeCategoryController(RecipeCategoryService recipeCategoryService) : ControllerBase
     {
         
         [HttpGet]
         public async Task<IResultBase> GetReceiptCategories()
         {
-            return await receiptCategoryService.GetAllAsync();
+            return await recipeCategoryService.GetAllAsync();
         }
         
         [HttpDelete("{id:guid}")]
         public async Task<IResultBase> DeleteReceiptCategory(Guid id)
         {
-            return await receiptCategoryService.DeleteAsync(id);
+            return await recipeCategoryService.DeleteAsync(id);
         }
         
         [HttpPost]
-        public async Task<IResultBase> AddReceiptCategory([FromBody] AddReceiptCategoryDto receiptCategoryDto)
+        public async Task<IResultBase> AddReceiptCategory([FromBody] AddRecipeCategoryDto recipeCategoryDto)
         {
-            return await receiptCategoryService.AddAsync(receiptCategoryDto);
+            return await recipeCategoryService.AddAsync(recipeCategoryDto);
         }
     }
 }

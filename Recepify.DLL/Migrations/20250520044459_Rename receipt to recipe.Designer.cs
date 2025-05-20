@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Recepify.DLL;
@@ -11,9 +12,11 @@ using Recepify.DLL;
 namespace Recepify.DLL.Migrations
 {
     [DbContext(typeof(RecepifyContext))]
-    partial class RecepifyContextModelSnapshot : ModelSnapshot
+    [Migration("20250520044459_Rename receipt to recipe")]
+    partial class Renamereceipttorecipe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

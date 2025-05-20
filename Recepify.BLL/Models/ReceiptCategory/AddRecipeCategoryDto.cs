@@ -1,6 +1,6 @@
 namespace Recepify.BLL.Models.ReceiptCategory;
 
-public class AddReceiptCategoryDto
+public class AddRecipeCategoryDto
 {
     public string Name { get; set; }
 }

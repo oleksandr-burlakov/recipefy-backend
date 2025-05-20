@@ -4,8 +4,8 @@ public class Tag : Entity
 {
     public Tag()
     {
-        Receipts = new HashSet<Receipt>();
+        Receipts = new HashSet<Recipe>();
     }
     public string Name { get; set; }
-    public ICollection<Receipt> Receipts { get; set; }
+    public ICollection<Recipe> Receipts { get; set; }
 }

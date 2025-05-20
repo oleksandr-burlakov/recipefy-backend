@@ -9,16 +9,16 @@ using Recepify.DLL.Entities;
 namespace Recepify.BLL.Services;
 
 // TODO: Rename all 'Receipt' to 'Recipe' in controller, service, classes
-public class ReceiptCategoryService(ILogger<ReceiptCategoryService> logger, RecepifyContext context)
+public class RecipeCategoryService(ILogger<RecipeCategoryService> logger, RecepifyContext context)
 {
-    public async Task<Result<bool>> AddAsync(AddReceiptCategoryDto receiptCategoryDto)
+    public async Task<Result<bool>> AddAsync(AddRecipeCategoryDto recipeCategoryDto)
     {
         try
         {
-            var receiptCategory = new ReceiptCategory()
+            var receiptCategory = new RecipeCategory()
             {
                 Id = Guid.NewGuid(),
-                Name = receiptCategoryDto.Name,
+                Name = recipeCategoryDto.Name,
             };
             context.ReceiptCategories.Add(receiptCategory);
             return await context.SaveChangesAsync() > 0;

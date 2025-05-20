@@ -8,7 +8,7 @@ using Recepify.DLL.Entities;
 
 namespace Recepify.BLL.Services;
 
-public class ReceiptService(RecepifyContext context, ILogger<ReceiptService> logger)
+public class RecipeService(RecepifyContext context, ILogger<RecipeService> logger)
 {
     public async Task<Result<bool>> AddAsync(AddReceiptDto receiptDto)
     {
@@ -17,10 +17,10 @@ public class ReceiptService(RecepifyContext context, ILogger<ReceiptService> log
             var tags = await context.Tags.Where(t => receiptDto.TagIds.Contains(t.Id)).ToListAsync();
             var ingredients =
                 await context.Ingredients.Where(i => receiptDto.IngredientIds.Contains(i.Id)).ToListAsync();
-            var receipt = new Receipt()
+            var receipt = new Recipe()
             {
                 Id = Guid.NewGuid(),
-                ReceiptCategoryId = receiptDto.ReceiptCategoryId,
+                RecipeCategoryId = receiptDto.ReceiptCategoryId,
                 Title = receiptDto.Title,
                 Description = receiptDto.Description,
                 Instructions = receiptDto.Instructions,
@@ -29,7 +29,7 @@ public class ReceiptService(RecepifyContext context, ILogger<ReceiptService> log
                 Tags = tags,
                 Ingredients = ingredients
             };
-            context.Receipts.Add(receipt);
+            context.Recipes.Add(receipt);
             return await context.SaveChangesAsync() > 0;
         }
         catch (Exception ex)
@@ -44,7 +44,7 @@ public class ReceiptService(RecepifyContext context, ILogger<ReceiptService> log
     {
         try
         {
-            var receipt = await context.Receipts.FirstOrDefaultAsync(x => x.Id == receiptDto.Id);
+            var receipt = await context.Recipes.FirstOrDefaultAsync(x => x.Id == receiptDto.Id);
 
             if (receipt is null)
             {
@@ -64,14 +64,14 @@ public class ReceiptService(RecepifyContext context, ILogger<ReceiptService> log
                 receipt.Ingredients = ingredients;
             }
 
-            receipt.ReceiptCategoryId = receiptDto.ReceiptCategoryId;
+            receipt.RecipeCategoryId = receiptDto.ReceiptCategoryId;
             receipt.Title = receiptDto.Title;
             receipt.Description = receiptDto.Description;
             receipt.Instructions = receiptDto.Instructions;
             receipt.PreparationTimeMinutes = receiptDto.PreparationTimeMinutes;
             receipt.CookingTimeMinutes = receiptDto.CookingTimeMinutes;
 
-            context.Receipts.Update(receipt);
+            context.Recipes.Update(receipt);
             return await context.SaveChangesAsync() > 0;
         }
         catch (Exception ex)
@@ -86,10 +86,10 @@ public class ReceiptService(RecepifyContext context, ILogger<ReceiptService> log
     {
         try
         {
-            var receipt = await context.Receipts.FirstOrDefaultAsync(x => x.Id == id);
+            var receipt = await context.Recipes.FirstOrDefaultAsync(x => x.Id == id);
             if (receipt is not null)
             {
-                context.Receipts.Remove(receipt);
+                context.Recipes.Remove(receipt);
                 return await context.SaveChangesAsync() > 0;
             }
 
@@ -103,11 +103,11 @@ public class ReceiptService(RecepifyContext context, ILogger<ReceiptService> log
         }
     }
 
-    public async Task<Result<List<Receipt>>> GetAllAsync()
+    public async Task<Result<List<Recipe>>> GetAllAsync()
     {
         try
         {
-            return await context.Receipts.ToListAsync();
+            return await context.Recipes.ToListAsync();
         }
         catch (Exception ex)
         {
@@ -117,11 +117,11 @@ public class ReceiptService(RecepifyContext context, ILogger<ReceiptService> log
         }
     }
     
-    public async Task<Result<Receipt?>> GetByIdAsync(Guid id)
+    public async Task<Result<Recipe?>> GetByIdAsync(Guid id)
     {
         try
         {
-            return await context.Receipts.FirstOrDefaultAsync(x => x.Id == id);
+            return await context.Recipes.FirstOrDefaultAsync(x => x.Id == id);
         }
         catch (Exception ex)
         {
