@@ -69,7 +69,12 @@ public static class DatabaseHelpers
 
         try
         {
-            await context.Database.MigrateAsync();
+            var pending = await context.Database.GetPendingMigrationsAsync();
+            if (pending.Any())
+            {
+                await context.Database.MigrateAsync();
+            }            
+            //await context.Database.MigrateAsync();
             Console.WriteLine("Database migration complete.");
         }
         catch (Exception ex)

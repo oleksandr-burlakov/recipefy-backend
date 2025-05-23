@@ -10,17 +10,17 @@ namespace Recepify.BLL.Services;
 
 public class RecipeService(RecepifyContext context, ILogger<RecipeService> logger)
 {
-    public async Task<Result<bool>> AddAsync(AddReceiptDto receiptDto)
+    public async Task<Result<Recipe>> AddAsync(AddReceiptDto receiptDto)
     {
         try
         {
             var tags = await context.Tags.Where(t => receiptDto.TagIds.Contains(t.Id)).ToListAsync();
             var ingredients =
                 await context.Ingredients.Where(i => receiptDto.IngredientIds.Contains(i.Id)).ToListAsync();
-            var receipt = new Recipe()
+            var recipe = new Recipe()
             {
                 Id = Guid.NewGuid(),
-                RecipeCategoryId = receiptDto.ReceiptCategoryId,
+                RecipeCategoryId = receiptDto.RecipeCategoryId,
                 Title = receiptDto.Title,
                 Description = receiptDto.Description,
                 Instructions = receiptDto.Instructions,
@@ -29,8 +29,9 @@ public class RecipeService(RecepifyContext context, ILogger<RecipeService> logge
                 Tags = tags,
                 Ingredients = ingredients
             };
-            context.Recipes.Add(receipt);
-            return await context.SaveChangesAsync() > 0;
+            context.Recipes.Add(recipe);
+            await context.SaveChangesAsync();
+            return recipe;
         }
         catch (Exception ex)
         {

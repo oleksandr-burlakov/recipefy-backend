@@ -3,7 +3,7 @@ namespace Recepify.BLL.Models.Receipt;
 
 public class AddReceiptDto
 {
-    public Guid ReceiptCategoryId { get; set; }
+    public Guid RecipeCategoryId { get; set; }
     public required string Title { get; set; }
     public required string Description { get; set; }
     public required string Instructions { get; set; }

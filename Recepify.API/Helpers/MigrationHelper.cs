@@ -12,7 +12,7 @@ public static class MigrationHelper
         {
             using var scope = app.ApplicationServices.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<RecepifyContext>();
-            await DatabaseHelpers.EnsureDatabaseCreatedAsync(dbContext);
+            //await DatabaseHelpers.EnsureDatabaseCreatedAsync(dbContext);
             await DatabaseHelpers.MigrateDatabaseAsync(dbContext);
             //dbContext.Database.Migrate();
         }
