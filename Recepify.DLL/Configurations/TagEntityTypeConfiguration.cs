@@ -10,6 +10,5 @@ public class TagEntityTypeConfiguration : IEntityTypeConfiguration<Tag>
     {
         builder.HasKey(t => t.Id);
         builder.Property(t => t.Name).HasMaxLength(255).IsRequired();
-        builder.HasMany<Recipe>(t => t.Receipts).WithMany(r => r.Tags);
     }
 }

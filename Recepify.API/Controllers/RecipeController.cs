@@ -25,15 +25,15 @@ public class RecipeController(RecipeService recipeService) : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IResultBase> AddReceipt([FromBody] AddReceiptDto receiptRequest)
+    public async Task<IResultBase> AddReceipt([FromBody] AddRecipeDto recipeRequest)
     {
-        return await recipeService.AddAsync(receiptRequest);
+        return await recipeService.AddAsync(recipeRequest);
     }
     
     [HttpPut]
-    public async Task<IResultBase> UpdateReceipt([FromBody] UpdateReceiptDto receiptRequest)
+    public async Task<IResultBase> UpdateReceipt([FromBody] UpdateRecipeDto recipeRequest)
     {
-        return await recipeService.UpdateAsync(receiptRequest);
+        return await recipeService.UpdateAsync(recipeRequest);
     }
     
     [HttpDelete("{id:guid}")]

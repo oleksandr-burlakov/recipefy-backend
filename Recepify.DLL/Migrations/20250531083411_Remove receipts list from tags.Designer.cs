@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Recepify.DLL;
@@ -11,9 +12,11 @@ using Recepify.DLL;
 namespace Recepify.DLL.Migrations
 {
     [DbContext(typeof(RecepifyContext))]
-    partial class RecepifyContextModelSnapshot : ModelSnapshot
+    [Migration("20250531083411_Remove receipts list from tags")]
+    partial class Removereceiptslistfromtags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -453,7 +456,7 @@ namespace Recepify.DLL.Migrations
                     b.HasOne("Recepify.DLL.Entities.Product", "Product")
                         .WithMany("Ingredients")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Recepify.DLL.Entities.Recipe", "Recipe")

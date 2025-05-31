@@ -10,6 +10,6 @@ public class IngredientEntityTypeConfiguration : IEntityTypeConfiguration<Ingred
     {
         builder.HasKey(i => i.Id);
         builder.HasOne(i => i.Recipe).WithMany(r => r.Ingredients).HasForeignKey(i => i.RecipeId);        
-        builder.HasOne(i => i.Product).WithMany(p => p.Ingredients).HasForeignKey(i => i.ProductId);
+        builder.HasOne(i => i.Product).WithMany(p => p.Ingredients).HasForeignKey(i => i.ProductId).OnDelete(DeleteBehavior.Restrict);
     }
 }

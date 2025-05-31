@@ -1,7 +1,10 @@
 ﻿using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Recepify.BLL.Models.Ingredients;
 using Recepify.BLL.Models.Receipt;
+using Recepify.BLL.Models.ReceiptCategory;
+using Recepify.BLL.Models.Tag;
 using Recepify.Core.ResultPattern;
 using Recepify.DLL;
 using Recepify.DLL.Entities;
@@ -10,28 +13,41 @@ namespace Recepify.BLL.Services;
 
 public class RecipeService(RecepifyContext context, ILogger<RecipeService> logger)
 {
-    public async Task<Result<Recipe>> AddAsync(AddReceiptDto receiptDto)
+    public async Task<Result<RecipeDto>> AddAsync(AddRecipeDto recipeDto)
     {
         try
         {
-            var tags = await context.Tags.Where(t => receiptDto.TagIds.Contains(t.Id)).ToListAsync();
-            var ingredients =
-                await context.Ingredients.Where(i => receiptDto.IngredientIds.Contains(i.Id)).ToListAsync();
+            var tags = await context.Tags.Where(t => recipeDto.TagIds.Contains(t.Id)).ToListAsync();
+            
             var recipe = new Recipe()
             {
                 Id = Guid.NewGuid(),
-                RecipeCategoryId = receiptDto.RecipeCategoryId,
-                Title = receiptDto.Title,
-                Description = receiptDto.Description,
-                Instructions = receiptDto.Instructions,
-                PreparationTimeMinutes = receiptDto.PreparationTimeMinutes,
-                CookingTimeMinutes = receiptDto.CookingTimeMinutes,
-                Tags = tags,
-                Ingredients = ingredients
+                RecipeCategoryId = recipeDto.RecipeCategoryId,
+                Title = recipeDto.Title,
+                Description = recipeDto.Description,
+                Instructions = recipeDto.Instructions,
+                PreparationTimeMinutes = recipeDto.PreparationTimeMinutes,
+                CookingTimeMinutes = recipeDto.CookingTimeMinutes,
+                Tags = tags
             };
             context.Recipes.Add(recipe);
             await context.SaveChangesAsync();
-            return recipe;
+            
+            var ingredients = recipeDto.Ingredients.Select(i => new Ingredient()
+            {
+                Id = Guid.NewGuid(),
+                ProductId = i.ProductId,
+                Quantity = i.Quantity,
+                Units = i.Units,
+                RecipeId = recipe.Id 
+            }).ToList();
+            if (ingredients.Any())
+            {
+                context.Ingredients.AddRange(ingredients);
+                await context.SaveChangesAsync();
+            }
+
+            return await this.GetByIdAsync(recipe.Id);
         }
         catch (Exception ex)
         {
@@ -41,39 +57,50 @@ public class RecipeService(RecepifyContext context, ILogger<RecipeService> logge
         }
     }
 
-    public async Task<Result<bool>> UpdateAsync(UpdateReceiptDto receiptDto)
+    public async Task<Result<RecipeDto>> UpdateAsync(UpdateRecipeDto recipeDto)
     {
         try
         {
-            var receipt = await context.Recipes.FirstOrDefaultAsync(x => x.Id == receiptDto.Id);
+            var recipe = await context.Recipes.FirstOrDefaultAsync(x => x.Id == recipeDto.Id);
 
-            if (receipt is null)
+            if (recipe is null)
             {
-                return false;
+                return new Error(StatusCode: (int)HttpStatusCode.NotFound, Title: "Receipt not found", Description: "Receipt with id: " + recipeDto.Id + " not found");
             }
 
-            if (receiptDto.TagIds.Any())
+            if (recipeDto.TagIds.Any())
             {
-                var tags = await context.Tags.Where(t => receiptDto.TagIds.Contains(t.Id)).ToListAsync();
-                receipt.Tags = tags;
+                var tags = await context.Tags.Where(t => recipeDto.TagIds.Contains(t.Id)).ToListAsync();
+                recipe.Tags = tags;
             }
 
-            if (receiptDto.IngredientIds.Any())
+            var oldIngredients = await context.Ingredients.Where(i => i.RecipeId == recipe.Id).ToListAsync();
+            context.Ingredients.RemoveRange(oldIngredients);
+            
+            var ingredients = recipeDto.Ingredients.Select(i => new Ingredient()
             {
-                var ingredients =
-                    await context.Ingredients.Where(i => receiptDto.IngredientIds.Contains(i.Id)).ToListAsync();
-                receipt.Ingredients = ingredients;
+                Id = Guid.NewGuid(),
+                ProductId = i.ProductId,
+                Quantity = i.Quantity,
+                Units = i.Units,
+                RecipeId = recipe.Id 
+            }).ToList();
+            if (ingredients.Any())
+            {
+                context.Ingredients.AddRange(ingredients);
+                await context.SaveChangesAsync();
             }
 
-            receipt.RecipeCategoryId = receiptDto.ReceiptCategoryId;
-            receipt.Title = receiptDto.Title;
-            receipt.Description = receiptDto.Description;
-            receipt.Instructions = receiptDto.Instructions;
-            receipt.PreparationTimeMinutes = receiptDto.PreparationTimeMinutes;
-            receipt.CookingTimeMinutes = receiptDto.CookingTimeMinutes;
+            recipe.RecipeCategoryId = recipeDto.RecipeCategoryId;
+            recipe.Title = recipeDto.Title;
+            recipe.Description = recipeDto.Description;
+            recipe.Instructions = recipeDto.Instructions;
+            recipe.PreparationTimeMinutes = recipeDto.PreparationTimeMinutes;
+            recipe.CookingTimeMinutes = recipeDto.CookingTimeMinutes;
 
-            context.Recipes.Update(receipt);
-            return await context.SaveChangesAsync() > 0;
+            context.Recipes.Update(recipe);
+            await context.SaveChangesAsync();
+            return await this.GetByIdAsync(recipe.Id);
         }
         catch (Exception ex)
         {
@@ -104,11 +131,40 @@ public class RecipeService(RecepifyContext context, ILogger<RecipeService> logge
         }
     }
 
-    public async Task<Result<List<Recipe>>> GetAllAsync()
+    public async Task<Result<List<RecipeDto>>> GetAllAsync()
     {
         try
         {
-            return await context.Recipes.ToListAsync();
+            return await context.Recipes
+                .Select(x => new RecipeDto()
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        Description = x.Description,
+                        Instructions = x.Instructions,
+                        PreparationTimeMinutes = x.PreparationTimeMinutes,
+                        CookingTimeMinutes = x.CookingTimeMinutes,
+                        Tags = x.Tags.Select(t => new TagDto()
+                        {
+                            Name = t.Name,
+                            Id = t.Id
+                        }).ToList(),
+                        Ingredients = x.Ingredients.Select(i => new IngredientDto()
+                        {
+                            Id = i.Id,
+                            ProductId = i.ProductId,
+                            Quantity = i.Quantity,
+                            Units = i.Units,
+                            ProductName = i.Product.Name
+                        }).ToList(),
+                        RecipeCategory = x.Category != null ? new ReceiptCategoryDto()
+                        {
+                            Id = x.Category.Id,
+                            Name = x.Category.Name
+                        } : null
+                    }
+                )
+                .ToListAsync();
         }
         catch (Exception ex)
         {
@@ -118,11 +174,41 @@ public class RecipeService(RecepifyContext context, ILogger<RecipeService> logge
         }
     }
     
-    public async Task<Result<Recipe?>> GetByIdAsync(Guid id)
+    public async Task<Result<RecipeDto?>> GetByIdAsync(Guid id)
     {
         try
         {
-            return await context.Recipes.FirstOrDefaultAsync(x => x.Id == id);
+            return await context.Recipes
+                .Select(x => new RecipeDto()
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        Description = x.Description,
+                        Instructions = x.Instructions,
+                        PreparationTimeMinutes = x.PreparationTimeMinutes,
+                        CookingTimeMinutes = x.CookingTimeMinutes,
+                        Tags = x.Tags.Select(t => new TagDto()
+                        {
+                            Name = t.Name,
+                            Id = t.Id
+                        }).ToList(),
+                        Ingredients = x.Ingredients.Select(i => new IngredientDto()
+                        {
+                            Id = i.Id,
+                            RecipeId = i.RecipeId,
+                            ProductId = i.ProductId,
+                            Quantity = i.Quantity,
+                            Units = i.Units,
+                            ProductName = i.Product.Name
+                        }).ToList(),
+                        RecipeCategory = x.Category != null ? new ReceiptCategoryDto()
+                        {
+                            Id = x.Category.Id,
+                            Name = x.Category.Name
+                        } : null
+                    }
+                )
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
         catch (Exception ex)
         {

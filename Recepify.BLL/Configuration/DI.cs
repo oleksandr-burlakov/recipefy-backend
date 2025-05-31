@@ -17,5 +17,6 @@ public static class DI
         services.AddScoped<RecipeService>();
         services.AddScoped<RecipeCategoryService>();
         services.AddScoped<TagService>();
+        services.AddScoped<IngredientService>();
     }
 }
