@@ -1,10 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Recepify.Core.ResultPattern;
+namespace SharedKernel.BaseClasses.ResultPattern;
 
 public class Result<T> : IResultBase
 {
-
     private Result(T value)
     {
         IsSuccess = true;
@@ -22,6 +21,7 @@ public class Result<T> : IResultBase
     [MemberNotNullWhen(true, nameof(Value))]
     [MemberNotNullWhen(false, nameof(Error))]
     public bool IsSuccess { get; set; }
+
     public T? Value { get; set; }
     public Error? Error { get; set; }
 

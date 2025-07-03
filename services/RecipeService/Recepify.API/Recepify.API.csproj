@@ -29,6 +29,7 @@
       <Content Include="..\docker-compose.yml">
         <Link>docker-compose.yml</Link>
       </Content>
+      <Content Remove="Recepify.DLL\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -39,6 +40,18 @@
 
     <ItemGroup>
       <Folder Include="Models\Products\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Recepify.DLL\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Recepify.DLL\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Recepify.DLL\**" />
     </ItemGroup>
 
 </Project>

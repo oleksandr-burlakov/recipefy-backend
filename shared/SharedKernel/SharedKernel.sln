@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "SharedKernel.csproj", "{5D96C6D7-13A8-4F13-ADEF-A6D7A7CF9667}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D96C6D7-13A8-4F13-ADEF-A6D7A7CF9667}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D96C6D7-13A8-4F13-ADEF-A6D7A7CF9667}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D96C6D7-13A8-4F13-ADEF-A6D7A7CF9667}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D96C6D7-13A8-4F13-ADEF-A6D7A7CF9667}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

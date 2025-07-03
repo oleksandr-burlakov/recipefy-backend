@@ -1,0 +1,69 @@
+services:
+  apigateway:
+    build:
+      context: ../
+      dockerfile: ./gateway/ApiGateway/Dockerfile
+    ports:
+      - 5000:8080
+    depends_on:
+      - recepify.api
+      - recipefy.authservice
+  recepify.api:
+    container_name: recepify_api
+    image: recepify.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ../
+      dockerfile: ./services/RecipeService/Recepify.API/Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - "db"
+  db:
+    image: postgres
+    container_name: postgres_db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: Password1!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+#  recipefy.communityservice:
+#    container_name: recipefy.communityservice
+#    image: recipefy.communityservice
+#    build:
+#      context: .
+#      dockerfile: ../services/CommunicationService/Dockerfile
+#    ports:
+#      - 8081:8081
+#    depends_on:
+#      - "db"
+  
+  recipefy.authservice:
+    container_name: recipefy.authservice
+    image: recipefy.authservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ..
+      dockerfile: ./services/AuthService/Dockerfile
+    ports:
+      - 8082:8080
+    depends_on:
+      - "auth_db"
+  auth_db:
+    image: postgres
+    container_name: postgres_auth_db
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: Password1!
+      POSTGRES_DB: auth_db
+    volumes:
+      - postgres_auth_data:/var/lib/postgresql/data
+  
+volumes:
+  postgres_data:
+  postgres_auth_data:
